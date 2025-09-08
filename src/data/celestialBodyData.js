@@ -44,7 +44,7 @@ export const celestialBodyData = new Map([
 	// }],
 	// ['4', {
 	// 	map: await loadTexture('./textures/line_obliquely_lilac_133412_3415x3415.jpg'),
-	// 	normalMap: await loadTexture('./textures/NormalMap (3).png'),
+	// 	normalMap: await loadTexture('./textures/NormalMap (3).webp'),
 	// 	position: new THREE.Vector3(-231, 0, 0),
 	// 	velocity: new THREE.Vector3(0, 0, 0.075),
 	// 	rotation: new THREE.Euler(0, 0, 0),

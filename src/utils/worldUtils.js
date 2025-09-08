@@ -7,7 +7,7 @@ export const G = 0.000000005;
 
 const pinStar = false;
 
-let drawContainers = true;
+let drawContainers = false;
 const containerRescaleGap = 100;
 const containerDistanceScaleFactor = 0.027;
 const containerMinScale = 1.2;
