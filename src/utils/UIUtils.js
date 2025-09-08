@@ -41,7 +41,7 @@ export function useCustomRangeBehavior(input, label, halfRange, incrementFunctio
 			impactedLabel.classList.add("decrement");
 			impactedLabel.classList.remove("increment");
 		}
-		impactedLabel.textContent = targetParameter.toFixed(2);
+		impactedLabel.textContent = targetParameter;
 
 		// update label
 		// if ("multipleValues" in label.dataset) {
