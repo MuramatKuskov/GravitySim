@@ -43,25 +43,11 @@ export function useCustomRangeBehavior(input, label, halfRange, incrementFunctio
 		}
 		impactedLabel.textContent = targetParameter;
 
-		// update label
-		// if ("multipleValues" in label.dataset) {
-		// 	const currentEntries = label.textContent.split("; ");
-
-		// 	switch (input.dataset.targetEntry) {
-		// 		case "X":
-		// 			currentEntries[0].textContent = `${targetParameter.toFixed(2)}`;
-		// 			break;
-		// 		case "Y":
-		// 			currentEntries[1].textContent = `${targetParameter.toFixed(2)}`;
-		// 			break;
-		// 		case "Z":
-		// 			currentEntries[2].textContent = `${targetParameter.toFixed(2)}`;
-		// 			break;
-		// 	}
-		// 	// label.textContent = currentEntries.join("; ");
-		// } else {
-		// 	label.textContent = targetParameter;
-		// }
+		if ("multipleValues" in label.dataset) {
+			impactedLabel.textContent = targetParameter.toFixed(2);
+		} else {
+			impactedLabel.textContent = targetParameter;
+		}
 	}, 50);
 
 	function abortContinuousInput() {
