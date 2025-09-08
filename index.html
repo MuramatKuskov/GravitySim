@@ -69,7 +69,20 @@
 										<div class="fieldset__display">
 											<legend>Position:</legend>
 											<span class="menu__input-label" id="celestialBodyPositionLabel"
-												data-multiple-values="true"></span>
+												data-multiple-values="true">
+												<div class="parameter__group" id="posLabelX">
+													<span class="parameter-label">X:</span>
+													<span class="parameter-value"></span>;
+												</div>
+												<div class="parameter__group" id="posLabelY">
+													<span class="parameter-label">Y:</span>
+													<span class="parameter-value"></span>;
+												</div>
+												<div class="parameter__group" id="posLabelZ">
+													<span class="parameter-label">Z:</span>
+													<span class="parameter-value"></span>;
+												</div>
+											</span>
 										</div>
 										<div class="vector3-input menu__input">
 											<label for="posX">X:</label>
@@ -87,18 +100,31 @@
 										<div class="fieldset__display">
 											<legend>Velocity:</legend>
 											<span class="menu__input-label" id="celestialBodyVelocityLabel"
-												data-multiple-values="true"></span>
+												data-multiple-values="true">
+												<div class="parameter__group" id="velLabelX">
+													<span class="parameter-label">X:</span>
+													<span class="parameter-value"></span>;
+												</div>
+												<div class="parameter__group" id="velLabelY">
+													<span class="parameter-label">Y:</span>
+													<span class="parameter-value"></span>;
+												</div>
+												<div class="parameter__group" id="velLabelZ">
+													<span class="parameter-label">Z:</span>
+													<span class="parameter-value"></span>;
+												</div>
+											</span>
 										</div>
 										<div class="vector3-input menu__input">
 											<label for="velX">X:</label>
-											<input class="vector3-component" type="range" id="velX" step="0.00001" min="0" max="1"
-												data-target-entry="X">
+											<input class="vector3-component" type="range" id="velX" step="0.00001" min="0"
+												max="0.05" data-target-entry="X">
 											<label for="velY">Y:</label>
-											<input class="vector3-component" type="range" id="velY" step="0.00001" min="0" max="1"
-												data-target-entry="Y">
+											<input class="vector3-component" type="range" id="velY" step="0.00001" min="0"
+												max="0.05" data-target-entry="Y">
 											<label for="velZ">Z:</label>
-											<input class="vector3-component" type="range" id="velZ" step="0.00001" min="0" max="1"
-												data-target-entry="Z">
+											<input class="vector3-component" type="range" id="velZ" step="0.00001" min="0"
+												max="0.05" data-target-entry="Z">
 										</div>
 								</div>
 							</div>

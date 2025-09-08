@@ -6,6 +6,15 @@ import { attachCameraToBody } from "./worldUtils.js";
 let rangeInputInterval = null;
 
 export function useCustomRangeBehavior(input, label, halfRange, incrementFunction, decrementFunction) {
+	let impactedLabel;
+
+	if ("multipleValues" in label.dataset) {
+		impactedLabel = label.querySelector(`#posLabel${input.dataset.targetEntry} .parameter-value`) ||
+			label.querySelector(`#velLabel${input.dataset.targetEntry} .parameter-value`);
+	} else {
+		impactedLabel = label;
+	}
+
 	rangeInputInterval = setInterval(() => {
 		let targetParameter;
 		if (input.value < halfRange) {
@@ -14,7 +23,7 @@ export function useCustomRangeBehavior(input, label, halfRange, incrementFunctio
 			targetParameter = incrementFunction(Math.abs(input.value - halfRange));
 		}
 
-		// special case for position change - draw trail
+		// draw trail on pos change
 		if (label.id === "celestialBodyPositionLabel") {
 			const bodyIndex = parseInt(input.closest(".menu").dataset.bodyIndex);
 			const body = scene.getObjectByName("CelestialBodies").children[bodyIndex];
@@ -24,24 +33,35 @@ export function useCustomRangeBehavior(input, label, halfRange, incrementFunctio
 		requestRenderIfNotRequested();
 
 		// update label
-		if ("multipleValues" in label.dataset) {
-			const currentEntries = label.textContent.split("; ");
-
-			switch (input.dataset.targetEntry) {
-				case "X":
-					currentEntries[0] = `X: ${targetParameter.toFixed(2)}`;
-					break;
-				case "Y":
-					currentEntries[1] = `Y: ${targetParameter.toFixed(2)}`;
-					break;
-				case "Z":
-					currentEntries[2] = `Z: ${targetParameter.toFixed(2)}`;
-					break;
-			}
-			label.textContent = currentEntries.join("; ");
+		const isIncrement = input.value >= halfRange;
+		if (isIncrement) {
+			impactedLabel.classList.add("increment");
+			impactedLabel.classList.remove("decrement");
 		} else {
-			label.textContent = targetParameter;
+			impactedLabel.classList.add("decrement");
+			impactedLabel.classList.remove("increment");
 		}
+		impactedLabel.textContent = targetParameter.toFixed(2);
+
+		// update label
+		// if ("multipleValues" in label.dataset) {
+		// 	const currentEntries = label.textContent.split("; ");
+
+		// 	switch (input.dataset.targetEntry) {
+		// 		case "X":
+		// 			currentEntries[0].textContent = `${targetParameter.toFixed(2)}`;
+		// 			break;
+		// 		case "Y":
+		// 			currentEntries[1].textContent = `${targetParameter.toFixed(2)}`;
+		// 			break;
+		// 		case "Z":
+		// 			currentEntries[2].textContent = `${targetParameter.toFixed(2)}`;
+		// 			break;
+		// 	}
+		// 	// label.textContent = currentEntries.join("; ");
+		// } else {
+		// 	label.textContent = targetParameter;
+		// }
 	}, 50);
 
 	function abortContinuousInput() {
@@ -49,6 +69,7 @@ export function useCustomRangeBehavior(input, label, halfRange, incrementFunctio
 			clearInterval(rangeInputInterval);
 			rangeInputInterval = null;
 			input.value = halfRange;
+			impactedLabel.classList.remove("increment", "decrement");
 		}
 	}
 
@@ -135,12 +156,105 @@ export function updateBodyView() {
 	const positionDisplay = viewFrame.querySelector("#celestialBodyPosition");
 	const velocityDisplay = viewFrame.querySelector("#celestialBodyVelocity");
 
+	// if current vel > prev vel,
+	// add "increment", if <, add "decrement"
+	// else remove both
+	// do the same for position changes
+
 	bodyType.value = body.userData.category || "unknown";
 	massLabel.textContent = body.userData.current.weightedMass;
-	positionDisplay.querySelector("#celestialBodyPositionLabel").textContent =
-		`X: ${body.position.x.toFixed(2)}; Y: ${body.position.y.toFixed(2)}; Z: ${body.position.z.toFixed(2)};`;
-	velocityDisplay.querySelector("#celestialBodyVelocityLabel").textContent =
-		`X: ${body.userData.current.velocity.x.toFixed(2)}; Y: ${body.userData.current.velocity.y.toFixed(2)}; Z: ${body.userData.current.velocity.z.toFixed(2)};`;
+
+	// update position and velocity displays
+	const posXDisplay = positionDisplay.querySelector("#posLabelX .parameter-value");
+	const posYDisplay = positionDisplay.querySelector("#posLabelY .parameter-value");
+	const posZDisplay = positionDisplay.querySelector("#posLabelZ .parameter-value");
+	const velXDisplay = velocityDisplay.querySelector("#velLabelX .parameter-value");
+	const velYDisplay = velocityDisplay.querySelector("#velLabelY .parameter-value");
+	const velZDisplay = velocityDisplay.querySelector("#velLabelZ .parameter-value");
+
+	const oldX = parseFloat(posXDisplay.textContent);
+	const oldY = parseFloat(posYDisplay.textContent);
+	const oldZ = parseFloat(posZDisplay.textContent);
+	const oldVelX = parseFloat(velXDisplay.textContent);
+	const oldVelY = parseFloat(velYDisplay.textContent);
+	const oldVelZ = parseFloat(velZDisplay.textContent);
+
+	posXDisplay.textContent = body.position.x.toFixed(2);
+	posYDisplay.textContent = body.position.y.toFixed(2);
+	posZDisplay.textContent = body.position.z.toFixed(2);
+	velXDisplay.textContent = body.userData.current.velocity.x.toFixed(2);
+	velYDisplay.textContent = body.userData.current.velocity.y.toFixed(2);
+	velZDisplay.textContent = body.userData.current.velocity.z.toFixed(2);
+
+	if (!scene.userData.animateWorld) {
+		posXDisplay.classList.remove("increment", "decrement");
+		posYDisplay.classList.remove("increment", "decrement");
+		posZDisplay.classList.remove("increment", "decrement");
+		velXDisplay.classList.remove("increment", "decrement");
+		velYDisplay.classList.remove("increment", "decrement");
+		velZDisplay.classList.remove("increment", "decrement");
+		return;
+	}
+
+	if (body.position.x > oldX) {
+		posXDisplay.classList.add("increment");
+		posXDisplay.classList.remove("decrement");
+	} else if (body.position.x < oldX) {
+		posXDisplay.classList.add("decrement");
+		posXDisplay.classList.remove("increment");
+	} else {
+		posXDisplay.classList.remove("increment", "decrement");
+	}
+
+	if (body.position.y > oldY) {
+		posYDisplay.classList.add("increment");
+		posYDisplay.classList.remove("decrement");
+	} else if (body.position.y < oldY) {
+		posYDisplay.classList.add("decrement");
+		posYDisplay.classList.remove("increment");
+	} else {
+		posYDisplay.classList.remove("increment", "decrement");
+	}
+
+	if (body.position.z > oldZ) {
+		posZDisplay.classList.add("increment");
+		posZDisplay.classList.remove("decrement");
+	} else if (body.position.z < oldZ) {
+		posZDisplay.classList.add("decrement");
+		posZDisplay.classList.remove("increment");
+	} else {
+		posZDisplay.classList.remove("increment", "decrement");
+	}
+
+	if (body.userData.current.velocity.x > oldVelX) {
+		velXDisplay.classList.add("increment");
+		velXDisplay.classList.remove("decrement");
+	} else if (body.userData.current.velocity.x < oldVelX) {
+		velXDisplay.classList.add("decrement");
+		velXDisplay.classList.remove("increment");
+	} else {
+		velXDisplay.classList.remove("increment", "decrement");
+	}
+
+	if (body.userData.current.velocity.y > oldVelY) {
+		velYDisplay.classList.add("increment");
+		velYDisplay.classList.remove("decrement");
+	} else if (body.userData.current.velocity.y < oldVelY) {
+		velYDisplay.classList.add("decrement");
+		velYDisplay.classList.remove("increment");
+	} else {
+		velYDisplay.classList.remove("increment", "decrement");
+	}
+
+	if (body.userData.current.velocity.z > oldVelZ) {
+		velZDisplay.classList.add("increment");
+		velZDisplay.classList.remove("decrement");
+	} else if (body.userData.current.velocity.z < oldVelZ) {
+		velZDisplay.classList.add("decrement");
+		velZDisplay.classList.remove("increment");
+	} else {
+		velZDisplay.classList.remove("increment", "decrement");
+	}
 }
 
 export function openBodyView(body) {
