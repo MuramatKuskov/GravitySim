@@ -7,9 +7,9 @@ export function loadTexture(path) {
 			path,
 			() => resolve(texture),
 			undefined,
-			(reject) => {
+			(error) => {
 				console.error('Error loading texture:', reject);
-				reject(reject);
+				reject(error);
 			}
 		);
 	});

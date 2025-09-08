@@ -49,7 +49,7 @@ controls.addEventListener('change', () => {
 //#endregion
 
 //#region skybox
-loadTexture('./space.jpg')
+loadTexture('./textures/space.jpg')
 	.then((texture) => {
 		texture.mapping = THREE.EquirectangularReflectionMapping;
 		texture.colorSpace = THREE.SRGBColorSpace;
