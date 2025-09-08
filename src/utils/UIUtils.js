@@ -133,6 +133,7 @@ export function handleCelestialBodyInput(menu, input, body) {
 
 export function updateBodyView() {
 	const viewFrame = document.getElementById("celestialBodyView");
+	if (!viewFrame.classList.contains("active")) return;
 	const bodyIndex = parseInt(viewFrame.dataset.bodyIndex);
 	const body = scene.getObjectByName("CelestialBodies").children[bodyIndex];
 	if (!body) return;
@@ -249,5 +250,5 @@ export function openBodyView(body) {
 	viewFrame.dataset.bodyIndex = body.userData.index;
 
 	updateBodyView();
-	attachCameraToBody(body);
+	// attachCameraToBody(body);
 }

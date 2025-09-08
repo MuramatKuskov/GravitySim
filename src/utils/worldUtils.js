@@ -86,6 +86,13 @@ export function attachCameraToBody(body) {
 	controls.update();
 }
 
+export function detachCamera() {
+	camera.userData.focusTarget = null;
+	camera.position.copy(camera.userData.defaultPosition);
+	controls.target.set(0, 0, 0);
+	controls.update();
+}
+
 export function updateContainerScales() {
 	const celestialBodies = scene.getObjectByName("CelestialBodies");
 	if (!celestialBodies) return;

@@ -12,7 +12,30 @@ input, select {
 	background: transparent;
 }
 
+/* #region fieldset */
+
+fieldset {
+	padding: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+fieldset:has(select) {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+}
+
+.fieldset__display {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1em;
+}
+
+/* #endregion */
+
 /* #region Range Input */
+
 input[type="range"] {
 	-webkit-appearance: none;
 	width: 100%;
@@ -53,24 +76,24 @@ input[type="range"]::-moz-range-thumb:hover {
 
 /* #endregion */
 
-/* #region fieldset */
+/* #region button */
 
-fieldset {
-	padding: 0.5em;
-	margin-bottom: 0.5em;
+button.menu__button {
+	padding: 0.3em;
+	border-radius: 8px;
+	background: #5a5a5a;
+	cursor: pointer;
+	transition: 200ms ease;
 }
 
-fieldset:has(select) {
-	display: flex;
-	justify-content: space-between;
-	flex-direction: row;
+button.menu__button img {
+	width: 2em;
+	height: 2em;
+	pointer-events: none;
 }
 
-.fieldset__display {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 1em;
+button.menu__button:hover {
+	transform: scale(1.1);
 }
 
 /* #endregion */

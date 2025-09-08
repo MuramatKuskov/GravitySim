@@ -1,10 +1,11 @@
 import { renderer, scene, camera, controls } from "../utils/threeSetup.js";
 import { requestRenderIfNotRequested } from "../utils/renderUtils.js";
-import { useCustomRangeBehavior, handleCelestialBodyInput, openBodyView, updateBodyView } from "../utils/UIUtils.js";
-import { getIntersects, resetWorld, attachCameraToBody } from "../utils/worldUtils.js";
+import { handleCelestialBodyInput, openBodyView, updateBodyView } from "../utils/UIUtils.js";
+import { attachCameraToBody, detachCamera, getIntersects, resetWorld } from "../utils/worldUtils.js";
 
 let draggingFrame = null;
 let dragStartX, dragStartY = 0;
+let touchedBody = null;
 
 export function initUI() {
 	setListeners();
@@ -40,6 +41,15 @@ function listenTouches() {
 					handleCelestialBodyInput(menu, input, body);
 					break;
 			}
+		} else if (event.target.id === "attachCameraButton") {
+			const menu = event.target.closest(".menu");
+			if (!menu) return;
+
+			const bodyIndex = parseInt(menu.dataset.bodyIndex);
+			const body = scene.getObjectByName("CelestialBodies").children[bodyIndex];
+			if (!body) return;
+
+			touchedBody = body;
 		}
 	});
 
@@ -54,6 +64,13 @@ function listenTouches() {
 
 	window.addEventListener("touchend", (event) => {
 		draggingFrame = null;
+		if (touchedBody) {
+			if (event.target === touchedBody) {
+				attachCameraToBody(body);
+			} else {
+				touchedBody = null;
+			}
+		}
 	});
 
 	window.addEventListener("touchcancel", (event) => {
@@ -70,10 +87,7 @@ function listenMouse() {
 			draggingFrame = event.target.parentElement;
 			dragStartX = event.clientX - event.target.parentElement.offsetLeft;
 			dragStartY = event.clientY - event.target.parentElement.offsetTop;
-		}
-
-		// continuously apply input range values
-		if (event.target.tagName === "INPUT" && event.target.type === "range") {
+		} else if (event.target.tagName === "INPUT" && event.target.type === "range") {
 			const input = event.target;
 
 			const menu = input.closest(".menu");
@@ -87,6 +101,19 @@ function listenMouse() {
 
 					handleCelestialBodyInput(menu, input, body);
 					break;
+			}
+		} else if (event.target.id === "attachCameraButton") {
+			const menu = event.target.closest(".menu");
+			if (!menu) return;
+
+			const bodyIndex = parseInt(menu.dataset.bodyIndex);
+			const body = scene.getObjectByName("CelestialBodies").children[bodyIndex];
+			if (!body) return;
+
+			if (!camera.userData.focusTarget || camera.userData.focusTarget !== body) {
+				attachCameraToBody(body);
+			} else {
+				detachCamera();
 			}
 		}
 	});
@@ -136,10 +163,7 @@ function listenPlayback() {
 
 	stopButton.addEventListener("click", () => {
 		// scene.userData.animateWorld = false;
-		camera.userData.focusTarget = null;
-		camera.position.copy(camera.userData.defaultPosition);
-		controls.target.set(0, 0, 0);
-		controls.update();
+		detachCamera();
 		// do not reset customized params here
 		// extract it to a separate UI element
 		resetWorld();

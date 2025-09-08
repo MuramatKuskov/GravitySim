@@ -26,9 +26,6 @@ camera.userData.defaultPosition = camera.position.clone();
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.25);
 scene.add(ambientLight);
 
-// export const light = new THREE.PointLight(0xff115f, 5000);
-// scene.add(light);
-
 export const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
