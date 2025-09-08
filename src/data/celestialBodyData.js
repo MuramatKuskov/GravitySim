@@ -1,0 +1,65 @@
+import * as THREE from 'three';
+import { loadTexture } from "../utils/loadMgmt.js";
+
+export const celestialBodyData = new Map([
+	['0', {
+		map: await loadTexture('./space.jpg'),
+		normalMap: await loadTexture('./space_normal.png'),
+		position: new THREE.Vector3(14, 0, 0),
+		velocity: new THREE.Vector3(-0.07, 0, -0.05),
+		rotation: new THREE.Euler(0, 0.01, 0),
+		category: 'star',
+		size: 5,
+		weightedMass: 30000,
+	}],
+	['1', {
+		map: await loadTexture('./5f7a570e671518.11331409.jpg'),
+		normalMap: await loadTexture('./NormalMap.png'),
+		position: new THREE.Vector3(-24, 0, 0),
+		velocity: new THREE.Vector3(0.0075, 0, 0.082),
+		rotation: new THREE.Euler(0, 0.1, 0),
+		category: 'planet',
+		size: 1,
+		weightedMass: 3000,
+	}],
+	['2', {
+		map: await loadTexture('./37d7deb0-b2f7-4473-9d41-8961d8ef3d35.jpg'),
+		normalMap: await loadTexture('./NormalMap (1).png'),
+		position: new THREE.Vector3(68, 0, -20),
+		velocity: new THREE.Vector3(-0.1, 0, -0.085),
+		rotation: new THREE.Euler(0, 0.6, 0),
+		category: 'planet',
+		size: 1,
+		weightedMass: 5000,
+	}],
+	// ['3', {
+	// 	map: await loadTexture('./1579710911_14-p-benzinovie-foni-42.jpg'),
+	// 	normalMap: await loadTexture('./NormalMap (2).png'),
+	// 	position: new THREE.Vector3(96, 8, -4),
+	// 	velocity: new THREE.Vector3(0, 0.02, -0.13),
+	// 	rotation: new THREE.Euler(0, 1, 0),
+	// 	category: 'planet',
+	// 	size: 1.5,
+	// 	weightedMass: 12000,
+	// }],
+	// ['4', {
+	// 	map: await loadTexture('./line_obliquely_lilac_133412_3415x3415.jpg'),
+	// 	normalMap: await loadTexture('./NormalMap (3).png'),
+	// 	position: new THREE.Vector3(-231, 0, 0),
+	// 	velocity: new THREE.Vector3(0, 0, 0.075),
+	// 	rotation: new THREE.Euler(0, 0, 0),
+	// 	category: 'planet',
+	// 	size: 1,
+	// 	weightedMass: 4000,
+	// }],
+	// ['5', {
+	// 	map: await loadTexture('./_original.jpg'),
+	// 	normalMap: await loadTexture('./original_normal.png'),
+	// 	position: new THREE.Vector3(-37, 0, 0),
+	// 	velocity: new THREE.Vector3(0, 0, 0.035),
+	// 	rotation: new THREE.Euler(0, -0.1, 0),
+	// 	category: 'planet',
+	// 	size: 1,
+	// 	weightedMass: 3500,
+	// }]
+]);

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./src/styles/style.css">
+	<script type="module" src="./src/app.js"></script>
+	<title>Spheres</title>
+</head>
+
+<body>
+	<main>
+		<div id="GUI">
+			<div id="playback">
+				<img src="./icons/play.svg" alt="play simulation" id="playButton" class="playback__button">
+				<img src="./icons/pause.svg" alt="pause simulation" id="pauseButton" class="playback__button">
+				<img src="./icons/stop.svg" alt="stop simulation" id="stopButton" class="playback__button">
+			</div>
+		</div>
+
+		<div id="overlays">
+			<div id="menus">
+				<div class="frame menu" id="celestialBodyView" data-body-index="" data-pinned="false">
+					<div class="drag-resize-container">
+						<div class="frame__content">
+							<div class="frame__header">
+								<h2 class="frame__title">Celestial Body View</h2>
+								<div class="frame__controls">
+									<img src="./icons/pin.svg" alt="pin frame" class="frame__control" data-action="pin"
+										id="pinCelestialBodyView">
+									<img src="./icons/cross.svg" alt="close frame" class="frame__control" data-action="close"
+										id="closeCelestialBodyView">
+								</div>
+							</div>
+							<div class="menu__content">
+								<div id="celestialBodyInfo">
+									<h3 class="">Celestial Body Information</h3>
+									<!-- Dynamic content will be injected here -->
+									<fieldset class="menu__fieldset" id="celestialBodyType">
+										<legend>Type:</legend>
+										<select class=" menu__input menu__select" id="celestialBodyType">
+											<option class="menu__select-option" value="star">Star</option>
+											<option class="menu__select-option" value="planet">Planet</option>
+											<option class="menu__select-option" value="moon">Moon</option>
+											<option class="menu__select-option" value="asteroid">Asteroid</option>
+											<option class="menu__select-option" value="comet">Comet</option>
+											<option class="menu__select-option" value="black hole">Black Hole</option>
+											<!-- <option class="menu__select-option" value="nebula">Nebula</option> -->
+											<!-- <option class="menu__select-option" value="galaxy">Galaxy</option> -->
+											<option class="menu__select-option" value="unknown">Unknown</option>
+										</select>
+									</fieldset>
+									<fieldset class="menu__fieldset" id="celestialBodyMassField">
+										<div class="fieldset__display">
+											<legend>Mass:</legend>
+											<label for="celestialBodyMass" class="menu__input-label"
+												id="celestialBodyMassLabel"></label>
+										</div>
+										<input class="menu__input" type="range" min="0" max="10000" step="1"
+											id="celestialBodyMass"></input>
+									</fieldset>
+									<!-- <fieldset class="menu__fieldset" id="celestialBodyRadiusField">
+										<legend>Radius:</legend>
+										<input class="menu__input" type="range" min="0" max="10000" step="1"
+											id="celestialBodyRadius"></input>
+									</fieldset> -->
+									<fieldset class="menu__fieldset" id="celestialBodyPosition">
+										<div class="fieldset__display">
+											<legend>Position:</legend>
+											<span class="menu__input-label" id="celestialBodyPositionLabel"
+												data-multiple-values="true"></span>
+										</div>
+										<div class="vector3-input menu__input">
+											<label for="posX">X:</label>
+											<input class="vector3-component" type="range" id="posX" step="0.1" min="0" max="10"
+												data-target-entry="X">
+											<label for="posY">Y:</label>
+											<input class="vector3-component" type="range" id="posY" step="0.1" min="0" max="10"
+												data-target-entry="Y">
+											<label for="posZ">Z:</label>
+											<input class="vector3-component" type="range" id="posZ" step="0.1" min="0" max="10"
+												data-target-entry="Z">
+										</div>
+									</fieldset>
+									<fieldset class="menu__fieldset" id="celestialBodyVelocity">
+										<div class="fieldset__display">
+											<legend>Velocity:</legend>
+											<span class="menu__input-label" id="celestialBodyVelocityLabel"
+												data-multiple-values="true"></span>
+										</div>
+										<div class="vector3-input menu__input">
+											<label for="velX">X:</label>
+											<input class="vector3-component" type="range" id="velX" step="0.00001" min="0" max="1"
+												data-target-entry="X">
+											<label for="velY">Y:</label>
+											<input class="vector3-component" type="range" id="velY" step="0.00001" min="0" max="1"
+												data-target-entry="Y">
+											<label for="velZ">Z:</label>
+											<input class="vector3-component" type="range" id="velZ" step="0.00001" min="0" max="1"
+												data-target-entry="Z">
+										</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="pop-ups"></div>
+		</div>
+	</main>
+</body>
+
+</html>
