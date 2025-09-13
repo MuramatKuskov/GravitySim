@@ -1,0 +1,80 @@
+.frame {
+	display: none;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 300px;
+	max-height: 90vh;
+	overflow-y: auto;
+	color: #7a7a7a;
+	border-radius: 8px;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	pointer-events: auto;
+	user-select: none;
+}
+
+.frame.active {
+	display: block;
+}
+
+
+.frame__transparent .frame__body {
+	background: transparent;
+}
+
+.frame__transparent .frame__header {
+	background: rgba(0, 0, 0, 0.7);
+}
+
+.frame__minimized .frame__body, .frame__minimized .drag-resize-container {
+	height: fit-content;
+}
+
+.frame__minimized .frame__content {
+	height: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.frame__body {
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.7);
+	cursor: default;
+	overflow: auto;
+}
+
+.frame__controls {
+	display: flex;
+	gap: 0.5em;
+}
+
+.frame__content {
+	width: 100%;
+	height: 100%;
+	padding: 0.7em 0.3em;
+}
+
+.frame__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.7em;
+	border-bottom: 1px solid #3a3a3a;
+	user-select: none;
+}
+
+.frame__controls img {
+	pointer-events: none;
+}
+
+.frame__controls:hover {
+	cursor: pointer;
+	filter: brightness(1.2);
+}
+
+.frame__control[data-action="minimize"] {
+	transform: translateY(50%);
+}

@@ -1,0 +1,56 @@
+#overlay img:hover {
+	cursor: pointer;
+	filter: brightness(1.2);
+	transform: scale(1.1);
+}
+
+#leftPanel {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 5em;
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: center;
+	gap: 1.5em;
+	padding: 3em 1.5em;
+	box-sizing: border-box;
+	pointer-events: none;
+	overflow: hidden;
+}
+
+#leftPanel img {
+	width: 3em;
+	height: 3em;
+	padding: 0.7em;
+	object-fit: contain;
+	pointer-events: all;
+	cursor: pointer;
+	transition: filter 0.3s ease;
+	background-image: radial-gradient(rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 0));
+	border-radius: 50%;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+#leftPanel img:hover {
+	filter: brightness(2) hue-rotate(300deg);
+}
+
+#toggleAxesHelper {
+	order: 2;
+}
+
+#playback {
+	position: fixed;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	gap: 1em;
+	width: fit-content;
+	padding: 1em;
+	border-radius: 8px;
+	background: rgba(0, 0, 0, 0.7);
+	pointer-events: all;
+}

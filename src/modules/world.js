@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { scene, camera } from "../utils/threeSetup.js";
 import { celestialBodyData } from "../data/celestialBodyData.js";
-import { applyGravitationalVelocity, updateContainerScales } from "../utils/worldUtils.js";
+import { applyGravitationalVelocity, updateContainerScales, updateVelocityVector } from "../utils/worldUtils.js";
 import { updateBodyView } from "../utils/UIUtils.js";
 
 let trailDistanceFactor = 2;
@@ -68,7 +68,20 @@ function createBody(i, celestialBodies) {
 	};
 	createBodyMesh(body, bodyData);
 	createBodyContainer(body);
+	createVelocityVector(body);
 	celestialBodies.add(body);
+}
+
+function createVelocityVector(body) {
+	const dir = body.userData.current.velocity.clone().normalize();
+	// const length = body.userData.current.velocity.length() * 150;
+	const length = Math.max(0.5, Math.min(body.userData.current.velocity.length() * 50, 50));
+	const hex = 0x0faa70;
+
+	const arrowHelper = new THREE.ArrowHelper(dir, new THREE.Vector3(0, 0, 0), length, hex, 0.5, 0.25);
+	arrowHelper.name = `velocityVector_${body.userData.index}`;
+	arrowHelper.visible = true;
+	body.add(arrowHelper);
 }
 
 function createBodyMesh(body, bodyData) {
@@ -152,6 +165,7 @@ export function updateWorld(deltaTime, reqRender) {
 
 			bodyMesh.userData.current.trailLifespan = Math.max(Math.min(calculatedTrailLength, 20000), 1000);
 
+			updateVelocityVector(body);
 			drawTrail(bodyMesh);
 		});
 		updateBodyView();

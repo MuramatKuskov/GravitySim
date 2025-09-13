@@ -72,6 +72,14 @@ function resetBodies() {
 
 			const mesh = body.getObjectByName(`bodyMesh_${body.userData.index}`);
 			mesh.userData.current.trailLifespan = 0;
+
+			const velocityVector = body.getObjectByName(`velocityVector_${body.userData.index}`);
+			if (!velocityVector || !velocityVector.visible) return;
+
+			const dir = body.userData.current.velocity.clone().normalize();
+			const length = body.userData.current.velocity.length() * 100;
+			velocityVector.setDirection(dir);
+			velocityVector.setLength(length);
 		});
 	}
 }
@@ -110,4 +118,15 @@ export function updateContainerScales() {
 		container.userData.lastRescaleDistance = distanceToCamera;
 		container.scale.setScalar(THREE.MathUtils.clamp(distanceToCamera * containerDistanceScaleFactor / body.userData.current.scale, containerMinScale, containerMaxScale));
 	});
+}
+
+export function updateVelocityVector(body) {
+	const arrowHelper = body.getObjectByName(`velocityVector_${body.userData.index}`);
+	if (!arrowHelper || !arrowHelper.visible) return;
+
+	const dir = body.userData.current.velocity.clone().normalize();
+	// const length = body.userData.current.velocity.length() * 150;
+	const length = Math.max(0.5, Math.min(body.userData.current.velocity.length() * 50, 50));
+	arrowHelper.setDirection(dir);
+	arrowHelper.setLength(length);
 }

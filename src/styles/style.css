@@ -1,5 +1,8 @@
 @import "./reset.css";
 @import "./inputs.css";
+@import "./overlay.css";
+@import "./frame.css";
+@import "./utils.css";
 
 canvas {
 	width: 100vw;
@@ -7,8 +10,7 @@ canvas {
 	display: block;
 }
 
-
-#GUI, #menus, #pop-ups {
+#GUI, #menus, #frames, #pop-ups {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -16,71 +18,6 @@ canvas {
 	bottom: 0;
 	pointer-events: none;
 	background: transparent;
-}
-
-.frame {
-	display: none;
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	width: 300px;
-	max-height: 90vh;
-	overflow-y: auto;
-	color: #7a7a7a;
-	border-radius: 8px;
-	font-family: Arial, sans-serif;
-	font-size: 14px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-	pointer-events: auto;
-	user-select: none;
-}
-
-.frame.active {
-	display: block;
-}
-
-.frame__content {
-	background: rgba(0, 0, 0, 0.7);
-	padding: 0 0.5em 0.5em;
-	cursor: default;
-}
-
-.drag-resize-container {
-	cursor: grabbing;
-	border: 0.5em solid #3a3a3a8f;
-}
-
-.frame__header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 0.5em 0.5em 0.5em 0.5em;
-	border-bottom: 1px solid #3a3a3a;
-	user-select: none;
-}
-
-.frame__controls img:hover {
-	cursor: pointer;
-	filter: brightness(1.2);
-}
-
-#playback {
-	position: fixed;
-	bottom: 0;
-	left: 50%;
-	transform: translateX(-50%);
-	display: flex;
-	gap: 1em;
-	width: fit-content;
-	padding: 1em;
-	border-radius: 8px;
-	background: rgba(0, 0, 0, 0.7);
-	pointer-events: all;
-}
-
-#playback img:hover {
-	cursor: pointer;
-	filter: brightness(1.2);
 }
 
 .menu__input input {

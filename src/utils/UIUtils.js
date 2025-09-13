@@ -1,7 +1,7 @@
 import { drawTrail } from "../modules/world.js";
 import { requestRenderIfNotRequested } from "./renderUtils.js";
 import { scene } from "./threeSetup.js";
-import { attachCameraToBody } from "./worldUtils.js";
+import { updateVelocityVector } from "./worldUtils.js";
 
 let rangeInputInterval = null;
 
@@ -28,6 +28,12 @@ export function useCustomRangeBehavior(input, label, halfRange, incrementFunctio
 			const bodyIndex = parseInt(input.closest(".menu").dataset.bodyIndex);
 			const body = scene.getObjectByName("CelestialBodies").children[bodyIndex];
 			drawTrail(body.getObjectByName(`bodyMesh_${bodyIndex}`));
+		}
+		// update velocity vector on vel change
+		if (label.id === "celestialBodyVelocityLabel") {
+			const bodyIndex = parseInt(input.closest(".menu").dataset.bodyIndex);
+			const body = scene.getObjectByName("CelestialBodies").children[bodyIndex];
+			updateVelocityVector(body);
 		}
 
 		requestRenderIfNotRequested();

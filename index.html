@@ -6,34 +6,32 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="./src/styles/style.css">
 	<script type="module" src="./src/app.js"></script>
-	<title>Spheres</title>
+	<link rel="icon" type="image/png" href="./icons/favicon.png">
+	<title>GravySim</title>
 </head>
 
 <body>
 	<main>
 		<div id="GUI">
-			<div id="playback">
-				<img src="./icons/play.svg" alt="play simulation" id="playButton" class="playback__button">
-				<img src="./icons/pause.svg" alt="pause simulation" id="pauseButton" class="playback__button">
-				<img src="./icons/stop.svg" alt="stop simulation" id="stopButton" class="playback__button">
-			</div>
-		</div>
-
-		<div id="overlays">
 			<div id="menus">
 				<div class="frame menu" id="celestialBodyView" data-body-index="" data-pinned="false">
 					<div class="drag-resize-container">
-						<div class="frame__content">
+						<div class="frame__body">
 							<div class="frame__header">
 								<h2 class="frame__title">Celestial Body View</h2>
 								<div class="frame__controls">
-									<img src="./icons/pin.svg" alt="pin frame" class="frame__control" data-action="pin"
-										id="pinCelestialBodyView">
-									<img src="./icons/cross.svg" alt="close frame" class="frame__control" data-action="close"
-										id="closeCelestialBodyView">
+									<div class="frame__control" data-action="minimize" id="minimizeCelestialBodyView">
+										<img src="./icons/dash.svg" alt="minimize frame">
+									</div>
+									<div class="frame__control" data-action="pin" id="pinCelestialBodyView">
+										<img src="./icons/pin.svg" alt="pin frame">
+									</div>
+									<div class="frame__control" data-action="close" id="closeCelestialBodyView">
+										<img src="./icons/cross.svg" alt="close frame">
+									</div>
 								</div>
 							</div>
-							<div class="menu__content">
+							<div class="frame__content menu__body">
 								<div id="celestialBodyInfo">
 									<h3 class="">Celestial Body Information</h3>
 									<!-- Dynamic content will be injected here -->
@@ -61,10 +59,10 @@
 											id="celestialBodyMass"></input>
 									</fieldset>
 									<!-- <fieldset class="menu__fieldset" id="celestialBodyRadiusField">
-										<legend>Radius:</legend>
-										<input class="menu__input" type="range" min="0" max="10000" step="1"
-											id="celestialBodyRadius"></input>
-									</fieldset> -->
+													<legend>Radius:</legend>
+													<input class="menu__input" type="range" min="0" max="10000" step="1"
+														id="celestialBodyRadius"></input>
+												</fieldset> -->
 									<fieldset class="menu__fieldset" id="celestialBodyPosition">
 										<div class="fieldset__display">
 											<legend>Position:</legend>
@@ -136,7 +134,73 @@
 					</div>
 				</div>
 			</div>
+
+			<div id="frames">
+				<div class="frame frame__transparent" id="axesHelper"
+					style="width: 40%;max-width: 300px;height: 30%;top:0;left:0;">
+					<div class="drag-resize-container">
+						<div class="frame__body">
+							<div class="frame__header">
+								<h2 class="frame__title">Axes Helper</h2>
+								<div class="frame__controls">
+									<div class="frame__control" data-action="minimize" id="minimizeAxisHelper">
+										<img src="./icons/dash.svg" alt="minimize frame">
+									</div>
+									<div class="frame__control" data-action="pin" id="pinAxisHelper">
+										<img src="./icons/pin.svg" alt="pin frame">
+									</div>
+									<div class="frame__control" data-action="close" id="closeAxisHelper">
+										<img src="./icons/cross.svg" alt="close frame">
+									</div>
+								</div>
+							</div>
+							<div class="frame__content"></div>
+						</div>
+					</div>
+				</div>
+				<div class="frame" id="notes">
+					<div class="drag-resize-container">
+						<div class="frame__body">
+							<div class="frame__header">
+								<h2 class="frame__title">Notes</h2>
+								<div class="frame__controls">
+									<div class="frame__control" data-action="minimize" id="minimizeNotes">
+										<img src="./icons/dash.svg" alt="minimize frame">
+									</div>
+									<div class="frame__control" data-action="pin" id="pinNotes">
+										<img src="./icons/pin.svg" alt="pin frame">
+									</div>
+									<div class="frame__control" data-action="close" id="closeNotes">
+										<img src="./icons/cross.svg" alt="close frame">
+									</div>
+								</div>
+							</div>
+							<div class="frame__content menu__body">
+								<textarea name="notesArea" id="notesArea" class="menu__input" rows="10"
+									placeholder="Write your notes here..."></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div id="pop-ups"></div>
+
+			<div id="overlay">
+				<div id="leftPanel">
+					<img class="overlay__button left-panel__button" src="./icons/directions.svg" id="toggleAxesHelper"
+						alt="toggle axes helper">
+					<img src="./icons/notes.svg" alt="toggle notes panel" class="overlay__button left-panel__button"
+						id="toggleNotesPanel">
+					<img src="./icons/vector.svg" alt="toggle vectors appearance" class="overlay__button left-panel__button"
+						id="toggleVectorsAppearance">
+				</div>
+				<div id="playback">
+					<img src="./icons/play.svg" alt="play simulation" id="playButton" class="playback__button">
+					<img src="./icons/pause.svg" alt="pause simulation" id="pauseButton" class="playback__button">
+					<img src="./icons/stop.svg" alt="stop simulation" id="stopButton" class="playback__button">
+				</div>
+			</div>
 		</div>
 	</main>
 </body>
