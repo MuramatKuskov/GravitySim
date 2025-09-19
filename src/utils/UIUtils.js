@@ -1,6 +1,6 @@
-import { drawTrail } from "../modules/world.js";
+import { drawTrail, setTrailLifespan } from "../modules/world.js";
 import { requestRenderIfNotRequested } from "./renderUtils.js";
-import { scene } from "./threeSetup.js";
+import { scene, axesScene } from "./threeSetup.js";
 import { updateVelocityVector } from "./worldUtils.js";
 
 let rangeInputInterval = null;
@@ -257,4 +257,125 @@ export function openBodyView(body) {
 
 	updateBodyView();
 	// attachCameraToBody(body);
+}
+
+export function handleSettingsInput(menu, input) {
+	switch (input.id) {
+		case "trailLength":
+			// wait till input value changes
+			setTimeout(() => {
+				const trailLengthLabel = menu.querySelector("#trailLengthLabel");
+				trailLengthLabel.textContent = input.value;
+				setTrailLifespan(parseInt(input.value));
+			}, 10);
+			break;
+
+		case "drawContainers":
+			const newValue = !input.checked;
+			localStorage.setItem("drawContainers", newValue);
+			const celestialBodies = scene.getObjectByName("CelestialBodies");
+			if (!celestialBodies) return;
+
+			celestialBodies.children.forEach((body) => {
+				const container = body.getObjectByName("BodyContainer");
+				if (container) {
+					container.visible = newValue;
+					requestRenderIfNotRequested();
+				}
+			});
+	}
+}
+
+export function handleLeftPanelButtons(event) {
+	switch (event.target.id) {
+		case "toggleAxesHelper":
+			const axesHelperFrame = document.getElementById("axesHelper");
+			axesHelperFrame.classList.toggle("active");
+			axesScene.visible = !axesScene.visible;
+			requestRenderIfNotRequested();
+			break;
+
+		case "toggleVectorsAppearance":
+			const celestialBodies = scene.getObjectByName("CelestialBodies");
+			if (!celestialBodies) return;
+			celestialBodies.children.forEach((body) => {
+				const velocityVector = body.getObjectByName(`velocityVector_${body.userData.index}`);
+				if (!velocityVector) return;
+				velocityVector.visible = !velocityVector.visible;
+			});
+			requestRenderIfNotRequested();
+			break;
+
+		case "toggleNotesPanel":
+			const notesPanel = document.getElementById("notes");
+			notesPanel.classList.toggle("active");
+			break;
+
+		case "openSettingsMenu":
+			const settingsMenu = document.getElementById("settings");
+			settingsMenu.classList.toggle("active");
+			break;
+
+		case "toggleFullscreen":
+			if (document.fullscreenElement) {
+				if (document.exitFullscreen) {
+					document.exitFullscreen();
+				} else if (document.mozCancelFullScreen) {
+					document.mozCancelFullScreen();
+				} else if (document.webkitExitFullscreen) {
+					document.webkitExitFullscreen();
+				} else if (document.msExitFullscreen) {
+					document.msExitFullscreen();
+				}
+				break;
+			}
+
+			if (document.documentElement.requestFullscreen) {
+				document.documentElement.requestFullscreen();
+			} else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
+				document.documentElement.mozRequestFullScreen();
+			} else if (document.documentElement.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+				document.documentElement.webkitRequestFullscreen();
+			} else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
+				document.documentElement.msRequestFullscreen();
+			}
+			break;
+	}
+}
+
+export function closeAllOverlays() {
+	const activeFrames = document.querySelectorAll(".frame.active");
+	activeFrames.forEach((frame) => {
+		if (frame.dataset.pinned === "true" || frame.dataset.forcePinned === "true") return;
+		frame.classList.remove("active");
+		if (frame.id === "axesHelper") {
+			axesScene.visible = false;
+			requestRenderIfNotRequested();
+		}
+	});
+}
+
+export function loadSavedNotes() {
+	const notes = document.querySelector("#notes textarea");
+	const savedNotes = localStorage.getItem("userNotes");
+	if (savedNotes) {
+		notes.value = savedNotes;
+	}
+}
+
+export function loadSavedSettings() {
+	const settings = document.querySelector("#settings");
+	const drawContainers = localStorage.getItem("drawContainers");
+	if (drawContainers === "true") {
+		const toggle = settings.querySelector("#drawContainers");
+		toggle.checked = true;
+		const celestialBodies = scene.getObjectByName("CelestialBodies");
+		if (!celestialBodies) return;
+		celestialBodies.children.forEach((body) => {
+			const container = body.getObjectByName("BodyContainer");
+			if (container) {
+				container.visible = true;
+			}
+		});
+	}
 }

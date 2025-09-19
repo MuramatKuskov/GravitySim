@@ -1,7 +1,7 @@
-import { renderer, scene, axesScene, camera, controls } from "../utils/threeSetup.js";
+import { renderer, scene, axesScene, camera } from "../utils/threeSetup.js";
 import { requestRenderIfNotRequested } from "../utils/renderUtils.js";
-import { handleCelestialBodyInput, openBodyView, updateBodyView } from "../utils/UIUtils.js";
-import { attachCameraToBody, detachCamera, getIntersects, resetWorld } from "../utils/worldUtils.js";
+import { handleCelestialBodyInput, handleSettingsInput, openBodyView, updateBodyView, handleLeftPanelButtons, closeAllOverlays, loadSavedNotes, loadSavedSettings } from "../utils/UIUtils.js";
+import { attachCameraToBody, detachCamera, getIntersects, resetWorld, toggleContainersVisibility } from "../utils/worldUtils.js";
 
 let draggingFrame = null;
 let resizingFrame = null;
@@ -9,13 +9,20 @@ let dragStartX, dragStartY = 0;
 let touchedBody = null;
 
 export function initUI() {
+	initSavedParameters();
 	setListeners();
+}
+
+function initSavedParameters() {
+	loadSavedNotes();
+	loadSavedSettings();
 }
 
 function setListeners() {
 	listenPlayback();
 	listenMouse();
 	listenTouches();
+	listenNotes();
 }
 
 function listenTouches() {
@@ -36,21 +43,8 @@ function listenTouches() {
 				dragStartX = event.touches[0].clientX - event.target.parentElement.offsetLeft;
 				dragStartY = event.touches[0].clientY - event.target.parentElement.offsetTop;
 			}
-		} else if (event.target.tagName === "INPUT" && event.target.type === "range") {
-			const input = event.target;
-
-			const menu = input.closest(".menu");
-			if (!menu) return;
-
-			switch (menu.id) {
-				case "celestialBodyView":
-					const bodyIndex = parseInt(menu.dataset.bodyIndex);
-					const body = scene.getObjectByName("CelestialBodies").children[bodyIndex];
-					if (!body) return;
-
-					handleCelestialBodyInput(menu, input, body);
-					break;
-			}
+		} else if (event.target.tagName === "INPUT") {
+			handleInput(event);
 		} else if (event.target.id === "attachCameraButton") {
 			const menu = event.target.closest(".menu");
 			if (!menu) return;
@@ -93,6 +87,8 @@ function listenTouches() {
 			if (resizingFrame.id === "axesHelper") {
 				requestRenderIfNotRequested();
 			}
+		} else if (event.target.id === "trailLength") {
+			handleInput(event);
 		}
 	});
 
@@ -132,21 +128,8 @@ function listenMouse() {
 				dragStartX = event.clientX - event.target.parentElement.offsetLeft;
 				dragStartY = event.clientY - event.target.parentElement.offsetTop;
 			}
-		} else if (event.target.tagName === "INPUT" && event.target.type === "range") {
-			const input = event.target;
-
-			const menu = input.closest(".menu");
-			if (!menu) return;
-
-			switch (menu.id) {
-				case "celestialBodyView":
-					const bodyIndex = parseInt(menu.dataset.bodyIndex);
-					const body = scene.getObjectByName("CelestialBodies").children[bodyIndex];
-					if (!body) return;
-
-					handleCelestialBodyInput(menu, input, body);
-					break;
-			}
+		} else if (event.target.tagName === "INPUT") {
+			handleInput(event);
 		} else if (event.target.id === "attachCameraButton") {
 			const menu = event.target.closest(".menu");
 			if (!menu) return;
@@ -175,29 +158,22 @@ function listenMouse() {
 	});
 }
 
-function handleLeftPanelButtons(event) {
-	switch (event.target.id) {
-		case "toggleAxesHelper":
-			const axesHelperFrame = document.getElementById("axesHelper");
-			axesHelperFrame.classList.toggle("active");
-			axesScene.visible = !axesScene.visible;
-			requestRenderIfNotRequested();
+function handleInput(event) {
+	const input = event.target;
+	const menu = input.closest(".menu");
+	if (!menu) return;
+
+	switch (menu.id) {
+		case "celestialBodyView":
+			const bodyIndex = parseInt(menu.dataset.bodyIndex);
+			const body = scene.getObjectByName("CelestialBodies").children[bodyIndex];
+			if (!body) return;
+
+			handleCelestialBodyInput(menu, input, body);
 			break;
 
-		case "toggleVectorsAppearance":
-			const celestialBodies = scene.getObjectByName("CelestialBodies");
-			if (!celestialBodies) return;
-			celestialBodies.children.forEach((body) => {
-				const velocityVector = body.getObjectByName(`velocityVector_${body.userData.index}`);
-				if (!velocityVector) return;
-				velocityVector.visible = !velocityVector.visible;
-			});
-			requestRenderIfNotRequested();
-			break;
-
-		case "toggleNotesPanel":
-			const notesPanel = document.getElementById("notes");
-			notesPanel.classList.toggle("active");
+		case "settings":
+			handleSettingsInput(menu, input);
 			break;
 	}
 }
@@ -260,18 +236,6 @@ function listenPlayback() {
 	});
 }
 
-function closeAllOverlays() {
-	const activeFrames = document.querySelectorAll(".frame.active");
-	activeFrames.forEach((frame) => {
-		if (frame.dataset.pinned === "true" || frame.dataset.forcePinned === "true") return;
-		frame.classList.remove("active");
-		if (frame.id === "axesHelper") {
-			axesScene.visible = false;
-			requestRenderIfNotRequested();
-		}
-	});
-}
-
 function handleCanvasClick(event) {
 	closeAllOverlays();
 
@@ -281,14 +245,12 @@ function handleCanvasClick(event) {
 	// pick smallest intersected object
 	let target;
 	intersects.forEach(({ object }) => {
-		if (!object.name.startsWith("BodyContainer_")) return;
+		if (object.name !== "BodyContainer") return;
 		if (!target) {
 			target = object;
 			return;
 		}
 	});
-
-	if (!target) console.warn(intersects);
 
 	openBodyView(target.parent);
 }
@@ -325,6 +287,8 @@ function handleMouseMove(event) {
 		}
 
 		return;
+	} else if (event.target.id === "trailLength") {
+		handleInput(event);
 	}
 
 	// canvas
@@ -338,7 +302,14 @@ function handleMouseMove(event) {
 
 	// if (!secondIntersect) { }
 	// // prioritize interaction with the second object
-	// if (secondIntersect?.name.startsWith("BodyContainer_") && firstIntersect.name.startsWith("BodyContainer_")) {
+	// if (secondIntersect?.name === "BodyContainer" && firstIntersect.name === "BodyContainer") {
 
 	// }
+}
+
+function listenNotes() {
+	const notes = document.getElementById("notes");
+	notes.addEventListener("input", (event) => {
+		localStorage.setItem("userNotes", event.target.value);
+	});
 }

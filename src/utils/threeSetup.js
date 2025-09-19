@@ -48,7 +48,7 @@ controls.addEventListener('change', () => {
 
 //#endregion
 
-/* #region axeshelper */
+// #region axeshelper
 
 export const axesHelperFrame = document.getElementById("axesHelper");
 export const axesScene = new THREE.Scene();
@@ -67,7 +67,7 @@ axeshelper.position.set(0, 0, 0.3);
 axesScene.add(axeshelper);
 // camera
 const fov = 45;
-const aspect = 2;  // the canvas default
+const aspect = 2;
 const near = 0.1;
 const far = 5;
 export const axesCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
@@ -117,7 +117,7 @@ labelLoader.load('assets/fonts/helvetiker_regular.typeface.json', (font) => {
 });
 
 
-/* #endregion */
+//#endregion
 
 //#region skybox
 loadTexture('./textures/space.jpg')

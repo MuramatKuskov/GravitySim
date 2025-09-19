@@ -82,6 +82,34 @@ input[type="range"]::-moz-range-thumb:hover {
 
 /* #endregion */
 
+/* #region checkbox */
+
+input[type="checkbox"] {
+	width: 1em;
+	height: 1em;
+	cursor: pointer;
+	background: transparent;
+	border-radius: 3px;
+	border: 1px solid #7a7a7a;
+	appearance: none;
+	-webkit-appearance: none;
+	display: inline-block;
+	position: relative;
+}
+
+/* input[type="checkbox"]:checked {
+	background: #7a7a7a;
+} */
+
+input[type="checkbox"]:checked::after {
+	content: url("/icons/check.svg");
+	position: absolute;
+	left: -0.1em;
+	top: -0.1em;
+}
+
+/* #endregion */
+
 /* #region button */
 
 button.menu__button {

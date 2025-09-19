@@ -106,8 +106,7 @@ export function updateContainerScales() {
 	if (!celestialBodies) return;
 
 	celestialBodies.children.forEach((body) => {
-		const container = body.getObjectByName(`BodyContainer_${body.name.split("_")[1]}`);
-		container.visible = drawContainers;
+		const container = body.getObjectByName("BodyContainer");
 		const distanceToCamera = camera.position.distanceTo(body.position);
 
 		if (!container) return;
@@ -125,8 +124,24 @@ export function updateVelocityVector(body) {
 	if (!arrowHelper || !arrowHelper.visible) return;
 
 	const dir = body.userData.current.velocity.clone().normalize();
-	// const length = body.userData.current.velocity.length() * 150;
 	const length = Math.max(0.5, Math.min(body.userData.current.velocity.length() * 50, 50));
 	arrowHelper.setDirection(dir);
 	arrowHelper.setLength(length);
+}
+
+export function toggleContainersVisibility() {
+	drawContainers = !drawContainers;
+	const celestialBodies = scene.getObjectByName("CelestialBodies");
+	if (!celestialBodies) return;
+
+	celestialBodies.children.forEach((body) => {
+		const container = body.getObjectByName("BodyContainer");
+		if (container) {
+			container.visible = drawContainers;
+		}
+	});
+}
+
+export function getContainersVisibility() {
+	return drawContainers;
 }

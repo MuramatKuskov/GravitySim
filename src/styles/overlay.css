@@ -37,10 +37,6 @@
 	filter: brightness(2) hue-rotate(300deg);
 }
 
-#toggleAxesHelper {
-	order: 2;
-}
-
 #playback {
 	position: fixed;
 	bottom: 0;

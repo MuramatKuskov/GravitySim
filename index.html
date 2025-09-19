@@ -133,75 +133,126 @@
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<div id="frames">
-				<div class="frame frame__transparent" id="axesHelper"
-					style="width: 40%;max-width: 300px;height: 30%;top:0;left:0;">
+				<div class="frame menu" id="settings" data-pinned="false">
 					<div class="drag-resize-container">
 						<div class="frame__body">
 							<div class="frame__header">
-								<h2 class="frame__title">Axes Helper</h2>
+								<h2 class="frame__title">Settings</h2>
 								<div class="frame__controls">
-									<div class="frame__control" data-action="minimize" id="minimizeAxisHelper">
+									<div class="frame__control" data-action="minimize" id="minimizeOptionsMenu">
 										<img src="./icons/dash.svg" alt="minimize frame">
 									</div>
-									<div class="frame__control" data-action="pin" id="pinAxisHelper">
+									<div class="frame__control" data-action="pin" id="pinOptionsMenu">
 										<img src="./icons/pin.svg" alt="pin frame">
 									</div>
-									<div class="frame__control" data-action="close" id="closeAxisHelper">
-										<img src="./icons/cross.svg" alt="close frame">
-									</div>
-								</div>
-							</div>
-							<div class="frame__content"></div>
-						</div>
-					</div>
-				</div>
-				<div class="frame" id="notes">
-					<div class="drag-resize-container">
-						<div class="frame__body">
-							<div class="frame__header">
-								<h2 class="frame__title">Notes</h2>
-								<div class="frame__controls">
-									<div class="frame__control" data-action="minimize" id="minimizeNotes">
-										<img src="./icons/dash.svg" alt="minimize frame">
-									</div>
-									<div class="frame__control" data-action="pin" id="pinNotes">
-										<img src="./icons/pin.svg" alt="pin frame">
-									</div>
-									<div class="frame__control" data-action="close" id="closeNotes">
+									<div class="frame__control" data-action="close" id="closeOptionsMenu">
 										<img src="./icons/cross.svg" alt="close frame">
 									</div>
 								</div>
 							</div>
 							<div class="frame__content menu__body">
-								<textarea name="notesArea" id="notesArea" class="menu__input" rows="10"
-									placeholder="Write your notes here..."></textarea>
+								<!-- <fieldset class="menu__fieldset">
+									<legend>Gravitational Constant (G):</legend>
+									<input class="menu__input" type="range" min="0.0001" max="0.01" step="0.0001"
+										id="gravitationalConstant"></input>
+									<span class="menu__input-label" id="gravitationalConstantLabel"></span>
+								</fieldset> -->
+								<!-- <fieldset class="menu__fieldset">
+									<legend>Time Scale:</legend>
+									<input class="menu__input" type="range" min="1" max="1000" step="1" id="timeScale"></input>
+									<span class="menu__input-label" id="timeScaleLabel"></span>
+								</fieldset> -->
+								<fieldset class="menu__fieldset">
+									<legend>Trail Lifespan:</legend>
+									<input class="menu__input" type="range" min="0" max="600" step="1" value="70"
+										id="trailLength"></input>
+									<span class="menu__input-label" id="trailLengthLabel">70</span>
+									<span class="menu__input-label">sec</span>
+								</fieldset>
+								<fieldset class="menu__fieldset">
+									<legend>Draw interactive containers</legend>
+									<input type="checkbox" class="menu__input" id="drawContainers">
+								</fieldset>
+								<!-- <fieldset class="menu__fieldset">
+									<legend>Pin system star</legend>
+									<input type="checkbox" class="menu__input" id="pinSystemStar">
+								</fieldset> -->
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<div id="pop-ups"></div>
+				<div id="frames">
+					<div class="frame frame__transparent" id="axesHelper"
+						style="width: 40%;max-width: 300px;height: 30%;top:0;left:0;">
+						<div class="drag-resize-container">
+							<div class="frame__body">
+								<div class="frame__header">
+									<h2 class="frame__title">Axes Helper</h2>
+									<div class="frame__controls">
+										<div class="frame__control" data-action="minimize" id="minimizeAxisHelper">
+											<img src="./icons/dash.svg" alt="minimize frame">
+										</div>
+										<div class="frame__control" data-action="pin" id="pinAxisHelper">
+											<img src="./icons/pin.svg" alt="pin frame">
+										</div>
+										<div class="frame__control" data-action="close" id="closeAxisHelper">
+											<img src="./icons/cross.svg" alt="close frame">
+										</div>
+									</div>
+								</div>
+								<div class="frame__content"></div>
+							</div>
+						</div>
+					</div>
+					<div class="frame" id="notes">
+						<div class="drag-resize-container">
+							<div class="frame__body">
+								<div class="frame__header">
+									<h2 class="frame__title">Notes</h2>
+									<div class="frame__controls">
+										<div class="frame__control" data-action="minimize" id="minimizeNotes">
+											<img src="./icons/dash.svg" alt="minimize frame">
+										</div>
+										<div class="frame__control" data-action="pin" id="pinNotes">
+											<img src="./icons/pin.svg" alt="pin frame">
+										</div>
+										<div class="frame__control" data-action="close" id="closeNotes">
+											<img src="./icons/cross.svg" alt="close frame">
+										</div>
+									</div>
+								</div>
+								<div class="frame__content menu__body">
+									<textarea name="notesArea" id="notesArea" class="menu__input" rows="10"
+										placeholder="Write your notes here..."></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 
-			<div id="overlay">
-				<div id="leftPanel">
-					<img class="overlay__button left-panel__button" src="./icons/directions.svg" id="toggleAxesHelper"
-						alt="toggle axes helper">
-					<img src="./icons/notes.svg" alt="toggle notes panel" class="overlay__button left-panel__button"
-						id="toggleNotesPanel">
-					<img src="./icons/vector.svg" alt="toggle vectors appearance" class="overlay__button left-panel__button"
-						id="toggleVectorsAppearance">
+				<div id="pop-ups"></div>
+
+				<div id="overlay">
+					<div id="leftPanel">
+						<img class="overlay__button left-panel__button" src="./icons/directions.svg" id="toggleAxesHelper"
+							alt="toggle axes helper" style="order: 5;">
+						<img src="./icons/notes.svg" alt="toggle notes panel" class="overlay__button left-panel__button"
+							id="toggleNotesPanel" style="order: 4;">
+						<img src="./icons/vector.svg" alt="toggle vectors appearance"
+							class="overlay__button left-panel__button" id="toggleVectorsAppearance" style="order: 3;">
+						<img src="./icons/gear.svg" alt="open settings menu" class="overlay__button left-panel__button"
+							id="openSettingsMenu" style="order: 2;">
+						<img src="./icons/fullScreen.svg" alt="toggle fullscreen mode"
+							class="overlay__button left-panel__button" id="toggleFullscreen" style="order: 1;">
+					</div>
+					<div id="playback">
+						<img src="./icons/play.svg" alt="play simulation" id="playButton" class="playback__button">
+						<img src="./icons/pause.svg" alt="pause simulation" id="pauseButton" class="playback__button">
+						<img src="./icons/stop.svg" alt="stop simulation" id="stopButton" class="playback__button">
+					</div>
 				</div>
-				<div id="playback">
-					<img src="./icons/play.svg" alt="play simulation" id="playButton" class="playback__button">
-					<img src="./icons/pause.svg" alt="pause simulation" id="pauseButton" class="playback__button">
-					<img src="./icons/stop.svg" alt="stop simulation" id="stopButton" class="playback__button">
-				</div>
-			</div>
-		</div>
 	</main>
 </body>
 

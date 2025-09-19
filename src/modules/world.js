@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import { scene, camera } from "../utils/threeSetup.js";
+import { scene } from "../utils/threeSetup.js";
 import { celestialBodyData } from "../data/celestialBodyData.js";
-import { applyGravitationalVelocity, updateContainerScales, updateVelocityVector } from "../utils/worldUtils.js";
+import { applyGravitationalVelocity, updateContainerScales, updateVelocityVector, getContainersVisibility } from "../utils/worldUtils.js";
 import { updateBodyView } from "../utils/UIUtils.js";
 
 let trailDistanceFactor = 2;
@@ -9,7 +9,18 @@ let trailDistanceFactor = 2;
 // let trailDistanceFactor = 15;
 // let trailMultiplier = 125;
 let trailMultiplier = 425;
-
+// ms
+let trailLifespan = document.getElementById("trailLength").valueAsNumber * 1000;
+export function setTrailLifespan(value) {
+	trailLifespan = value * 1000;
+	// update lifespan for existing trails
+	const trailGroup = scene.getObjectByName("TrailGroup");
+	if (!trailGroup) return;
+	trailGroup.children.forEach((trailMesh) => {
+		trailMesh.userData.lifespan = trailLifespan;
+		trailMesh.userData.fadeStartDistance = trailLifespan * 0.7;
+	});
+}
 const celestialGeometry = new THREE.SphereGeometry(1, 64, 64);
 const trailGeometry = new THREE.CircleGeometry(0.05, 10);
 const trailMaterial = new THREE.PointsMaterial({ color: 0x006faa, opacity: 1.0, transparent: true, size: 0.1, sizeAttenuation: true });
@@ -129,7 +140,8 @@ function createBodyMesh(body, bodyData) {
 function createBodyContainer(body) {
 	const containerMaterial = new THREE.MeshBasicMaterial({ color: 0x11ffaf, wireframe: true, opacity: 0.1, transparent: true });
 	const container = new THREE.Mesh(celestialGeometry.clone(), containerMaterial);
-	container.name = `BodyContainer_${body.name.split("_")[1]}`;
+	container.name = `BodyContainer`;
+	container.visible = getContainersVisibility();
 	body.add(container);
 }
 
@@ -147,6 +159,7 @@ export function updateWorld(deltaTime, reqRender) {
 			bodyMesh.rotation.y += bodyMesh.userData.current.rotation.y * deltaTime;
 			bodyMesh.rotation.z += bodyMesh.userData.current.rotation.z * deltaTime;
 
+			/* change trail lifespan based on distance to center and velocity
 			// calc distance to the calculated center of mass
 			// mb pass this to drawTrail()?
 			const distanceToCenter = body.position.distanceTo(new THREE.Vector3(0, 0, 0));
@@ -164,6 +177,7 @@ export function updateWorld(deltaTime, reqRender) {
 			// const calculatedTrailLength = (Math.log2(distanceToCenter) * trailDistanceFactor) * trailMultiplier;
 
 			bodyMesh.userData.current.trailLifespan = Math.max(Math.min(calculatedTrailLength, 20000), 1000);
+			 */
 
 			updateVelocityVector(body);
 			drawTrail(bodyMesh);
@@ -194,7 +208,7 @@ function handleTrails(trailGroup) {
 }
 
 export function drawTrail(bodyMesh) {
-	const trailLifespan = bodyMesh.userData.current.trailLifespan;
+	// const trailLifespan = bodyMesh.userData.current.trailLifespan;
 	const trailGroup = scene.getObjectByName("TrailGroup");
 	const trailMesh = new THREE.Points(trailGeometry.clone(), trailMaterial.clone());
 

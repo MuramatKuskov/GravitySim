@@ -8,9 +8,13 @@
 2. [x]
 - resizing frames
 - notes frame
+- parameters frame
+- save parameters & notes in localStorage
 3. []
 - find optimal starting parameters for bodies
 - add more bodies
+- formatting options for notes
+- more CRUD options for custom parameters in localStorage
 4. []
 - consider rescaling objects in the world
 5. []
